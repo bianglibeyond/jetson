@@ -19,21 +19,27 @@ def main():
         while True:
             
             if isPWM:
-                timeStart = datetime.now()
+                timeStartS = datetime.now()
+                # 1s loop
                 while(True):
-                    # 10ms as a round, 100 in total is 1s
-                    n = 0
-                    while n<10:
-                        if n<pwmStrength:
-                            curr_sig = GPIO.HIGH
-                            GPIO.output(motorPin12, curr_sig)
-                        else:
-                            curr_sig = GPIO.LOW
-                            GPIO.output(motorPin12, curr_sig)
-                        n += 1
-                    timePeriod = (datetime.now()-timeStart).total_seconds()
-                    if timePeriod>pwmTimeDuration:
-                        break
+                    timeStartMs = datetime.now()
+                    # 1ms loop
+                    while(True):
+                        n = 0
+                        while n<10:
+                            if n<pwmStrength:
+                                curr_sig = GPIO.HIGH
+                                GPIO.output(motorPin12, curr_sig)
+                            else:
+                                curr_sig = GPIO.LOW
+                                GPIO.output(motorPin12, curr_sig)
+                            n += 1
+                        timePeriod = (datetime.now()-timeStartMs).total_seconds()
+                        if timePeriod>pwmTimeDuration:
+                            break
+                    timePeriod = (datetime.now()-timeStartS).total_seconds()
+                    if timePeriod>1.0:
+                            break
                 isPWM = not isPWM
                 print("Outputting {} to Pin {}".format(pwmStrength, motorPin12))
             else:
