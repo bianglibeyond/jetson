@@ -5,7 +5,7 @@ import time
 motorPin12 = 12  # BOARD pin 12
 
 def main():
-    pwmStrength = 5
+    pwmStrength = 2
 
     # Pin Setup:
     GPIO.setmode(GPIO.BOARD)  # BOARD pin-numbering scheme
