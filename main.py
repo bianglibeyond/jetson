@@ -6,6 +6,7 @@ motorPin12 = 12  # BOARD pin 12
 
 def main():
     pwmStrength = 2
+    pwmTimeUnit = 0.001
 
     # Pin Setup:
     GPIO.setmode(GPIO.BOARD)  # BOARD pin-numbering scheme
@@ -36,6 +37,8 @@ def main():
                 isPWM = not isPWM
                 print("Outputting {} to Pin {}".format(10, motorPin12))
                 time.sleep(1)
+            
+            print("\r\nTime is {}\r\n".format(time.now))
     finally:
         GPIO.cleanup()  # cleanup all GPIO
 
