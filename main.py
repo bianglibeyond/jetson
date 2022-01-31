@@ -1,5 +1,6 @@
 import RPi.GPIO as GPIO
 import time
+from datetime import datetime
 
 # Pin Definitons:
 motorPin12 = 12  # BOARD pin 12
@@ -38,7 +39,7 @@ def main():
                 print("Outputting {} to Pin {}".format(10, motorPin12))
                 time.sleep(1)
             
-            print("\r\nTime is {}\r\n".format(time.now))
+            print("\r\nTime is {}\r\n".format(datetime.now()))
     finally:
         GPIO.cleanup()  # cleanup all GPIO
 
