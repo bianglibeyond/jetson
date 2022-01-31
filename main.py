@@ -7,7 +7,7 @@ motorPin12 = 12  # BOARD pin 12
 
 def main():
     pwmStrength = 2
-    pwmTimeUnit = 0.001
+    pwmTimeDuration = 0.01
 
     # Pin Setup:
     GPIO.setmode(GPIO.BOARD)  # BOARD pin-numbering scheme
@@ -19,7 +19,8 @@ def main():
         while True:
             
             if isPWM:
-                for round in range(10):
+                timeStart = datetime.now()
+                while(True):
                     # 10ms as a round, 100 in total is 1s
                     n = 0
                     while n<10:
@@ -30,7 +31,9 @@ def main():
                             curr_sig = GPIO.LOW
                             GPIO.output(motorPin12, curr_sig)
                         n += 1
-                        time.sleep(0.01)
+                    timePeriod = (datetime.now()-timeStart).total_seconds()
+                    if timePeriod>pwmTimeDuration:
+                        break
                 isPWM = not isPWM
                 print("Outputting {} to Pin {}".format(pwmStrength, motorPin12))
             else:
