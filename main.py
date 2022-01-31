@@ -5,26 +5,36 @@ import time
 motorPin12 = 12  # BOARD pin 12
 
 def main():
-    prev_value = None
+    pwmStrength = 5
 
     # Pin Setup:
     GPIO.setmode(GPIO.BOARD)  # BOARD pin-numbering scheme
     GPIO.setup(motorPin12, GPIO.OUT)
-
-    curr_sig = GPIO.LOW
-    oppo_sig = GPIO.HIGH
-    GPIO.output(motorPin12, curr_sig)
+    GPIO.output(motorPin12, GPIO.LOW)
     print("Starting demo now! Press CTRL+C to exit")
     try:
         while True:
-            GPIO.output(motorPin12, oppo_sig)
-            temp = oppo_sig
-            oppo_sig = curr_sig
-            curr_sig = temp
-            print("Outputting {} to Pin {}".format(curr_sig, motorPin12))
+            for round in range(10):
+                # 10ms as a round, 100 in total is 1s
+                n = 0
+                while n<10:
+                    if n<pwmStrength:
+                        curr_sig = GPIO.HIGH
+                        GPIO.output(motorPin12, curr_sig)
+                    else:
+                        curr_sig = GPIO.LOW
+                        GPIO.output(motorPin12, curr_sig)
+                    n += 1
+                    time.sleep(0.01)
+            print("Outputting {} to Pin {}".format(pwmStrength, motorPin12))
+            GPIO.output(motorPin12, GPIO.LOW)
             time.sleep(1)
     finally:
         GPIO.cleanup()  # cleanup all GPIO
+
+
+
+# def setMotorPinPWM(pin, )
 
 if __name__ == '__main__':
     main()
