@@ -22,24 +22,18 @@ def main():
                 timeStartS = datetime.now()
                 # 1s loop
                 while(True):
-                    timeStartMs = datetime.now()
-                    # 1ms loop
-                    while(True):
-                        n = 0
-                        while n<10:
-                            if n<pwmStrength:
-                                curr_sig = GPIO.HIGH
-                                GPIO.output(motorPin12, curr_sig)
-                            else:
-                                curr_sig = GPIO.LOW
-                                GPIO.output(motorPin12, curr_sig)
-                            n += 1
-                        timePeriod = (datetime.now()-timeStartMs).total_seconds()
-                        if timePeriod>pwmTimeDuration:
-                            break
+                    n = 0
+                    while n<10:
+                        if n<pwmStrength:
+                            curr_sig = GPIO.HIGH
+                            GPIO.output(motorPin12, curr_sig)
+                        else:
+                            curr_sig = GPIO.LOW
+                            GPIO.output(motorPin12, curr_sig)
+                        n += 1
                     timePeriod = (datetime.now()-timeStartS).total_seconds()
-                    if timePeriod>1.0:
-                            break
+                    if timePeriod>pwmTimeDuration:
+                        break
                 isPWM = not isPWM
                 print("Outputting {} to Pin {}".format(pwmStrength, motorPin12))
             else:
