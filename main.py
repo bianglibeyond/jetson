@@ -17,7 +17,7 @@ def main():
         while True:
             
             if isPWM:
-                for round in range(10):
+                for round in range(100):
                     # 10ms as a round, 100 in total is 1s
                     n = 0
                     while n<10:
@@ -28,7 +28,7 @@ def main():
                             curr_sig = GPIO.LOW
                             GPIO.output(motorPin12, curr_sig)
                         n += 1
-                        time.sleep(0.01)
+                        time.sleep(0.001)
                 isPWM = not isPWM
                 print("Outputting {} to Pin {}".format(pwmStrength, motorPin12))
             else:
