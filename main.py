@@ -13,8 +13,9 @@ def main():
     GPIO.output(motorPin12, GPIO.LOW)
     print("Starting demo now! Press CTRL+C to exit")
     try:
+        isPWM = True
         while True:
-            isPWM = True
+            
             if isPWM:
                 for round in range(10):
                     # 10ms as a round, 100 in total is 1s
@@ -29,12 +30,12 @@ def main():
                         n += 1
                         time.sleep(0.01)
                 isPWM = not isPWM
+                print("Outputting {} to Pin {}".format(pwmStrength, motorPin12))
             else:
                 GPIO.output(motorPin12, GPIO.HIGH)
                 isPWM = not isPWM
-            print("Outputting {} to Pin {}".format(pwmStrength, motorPin12))
-            GPIO.output(motorPin12, GPIO.LOW)
-            time.sleep(1)
+                print("Outputting {} to Pin {}".format(10, motorPin12))
+                time.sleep(1)
     finally:
         GPIO.cleanup()  # cleanup all GPIO
 
