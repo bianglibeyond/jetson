@@ -10,7 +10,7 @@ def main():
     GPIO.setmode(GPIO.BOARD)  # BOARD pin-numbering scheme
 
     motor1 = MotorThread(name="Motor1", jetsonPin=12, pwmStrength=pwmStrength)
-    motor1.run()
+    motor1.start()
     print("After motor1")
 
     try:
