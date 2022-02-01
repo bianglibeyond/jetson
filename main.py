@@ -9,31 +9,39 @@ def main():
     # Pin Setup:
     GPIO.setmode(GPIO.BOARD)  # BOARD pin-numbering scheme
 
-    motor1 = MotorThread(name="Motor1", jetsonPin=12, pwmStrength=pwmStrength)
+    motor1 = MotorThread(jetsonPin=12, pwmStrength=pwmStrength)
     motor1.start()
-    print("After motor1")
+    control = ControlThread()
+    control.start()
 
-    try:
-        while True:
-            pwmStrength = int(input("Set PWM capacity(0-10): "))
-            motor1.join()
-            while motor1.is_alive():
-                pass
-            motor1 = MotorThread(name="Motor1", jetsonPin=12, pwmStrength=pwmStrength)
-            motor1.run()
-            print("Outputting {} to Pin {}".format(pwmStrength, 12))
+    try: 
+        while True: pass
     finally:
         GPIO.cleanup()  # cleanup all GPIO
     
 
 
+class ControlThread(threading.Thread):
+    def __init__(self):
+        threading.Thread.__init__(self)
+        print("Control Panel is ready!")
+    def run(self):
+        while(True):
+            pwmStrength = int(input("Set PWM capacity(0-10): "))
+            motor1.join()
+            while motor1.is_alive(): pass
+            motor1 = MotorThread(jetsonPin=12, pwmStrength=pwmStrength)
+            motor1.start()
+            print("Outputting {} to Pin {}".format(pwmStrength, 12))
+
+
+
 class MotorThread(threading.Thread):
-    def __init__(self, name, jetsonPin, pwmStrength):
+    def __init__(self, jetsonPin, pwmStrength):
         self._stopevent = threading.Event()
-        self._sleepperiod = 1.0
-        threading.Thread.__init__(self, name=name)
         self.jetsonPin = jetsonPin
         self.pwmStrength = pwmStrength
+        threading.Thread.__init__(self)
     def run(self):
         GPIO.setup(self.jetsonPin, GPIO.OUT)
         GPIO.output(self.jetsonPin, GPIO.LOW)
