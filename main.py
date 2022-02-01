@@ -32,7 +32,7 @@ class ControlThread(threading.Thread):
             while self.motor1.is_alive(): pass
             self.motor1 = MotorThread(jetsonPin=12, pwmStrength=pwmStrength)
             self.motor1.start()
-            print("Outputting {} to Pin {}".format(pwmStrength, 12))
+            print("Outputting {} to Pin {}.".format(pwmStrength, 12))
 
 
 
