@@ -20,25 +20,25 @@ def main():
     motors = [MotorThread(pin=motorStatus[motor]["Pin"], pwm=motorStatus[motor]["PWM"]) for motor in motorNames]
     for motor in motors: motor.start()
 
-    try: 
-        while True:
-            while not isMotorsAllPrinted(): pass
-            motorNum = int(input("\r\nSelect motor to control(0-{}, enter 9 to quit): ".format(len(pins)-1)))
-            if motorNum==9:
-                for motor in motors: motor.join()
-                while not isMotorsAllShut(): pass
-                break
-            pwm = int(input("\r\nSet PWM capacity(0-10): "))
-            motorSelected = "Motor {}".format(motorNum)
-            motorStatus[motorSelected]["PWM"] = pwm
-            motors[motorNum].join()
-            while motors[motorNum].is_alive(): pass
-            # self.motors[motorNum]._running = False
-            newMotor = MotorThread(pin=motorStatus[motorSelected]["Pin"], pwm=motorStatus[motorSelected]["PWM"])
-            motors[motorNum] = newMotor
-            newMotor.start()
-    finally:
-        GPIO.cleanup()  # cleanup all GPIO
+    # try: 
+    while True:
+        while not isMotorsAllPrinted(): pass
+        motorNum = int(input("\r\nSelect motor to control(0-{}, enter 9 to quit): ".format(len(pins)-1)))
+        if motorNum==9:
+            for motor in motors: motor.join()
+            while not isMotorsAllShut(): pass
+            break
+        pwm = int(input("\r\nSet PWM capacity(0-10): "))
+        motorSelected = "Motor {}".format(motorNum)
+        motorStatus[motorSelected]["PWM"] = pwm
+        motors[motorNum].join()
+        while motors[motorNum].is_alive(): pass
+        # self.motors[motorNum]._running = False
+        newMotor = MotorThread(pin=motorStatus[motorSelected]["Pin"], pwm=motorStatus[motorSelected]["PWM"])
+        motors[motorNum] = newMotor
+        newMotor.start()
+    # finally:
+    #     GPIO.cleanup()  # cleanup all GPIO
 
 
 
