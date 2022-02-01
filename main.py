@@ -21,13 +21,12 @@ class ControlThread(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         print("Control Panel is ready!")
-        time.sleep(2)
         self.motor1 = MotorThread(jetsonPin=12, pwmStrength=0)
         self.motor1.start()
         while not self.motor1.is_alive(): pass
-        time.sleep(0.01)
     def run(self):
         while(True):
+            while not self.motor1.isPrint: pass
             pwmStrength = int(input("\r\nSet PWM capacity(0-10): "))
             self.motor1.join()
             while self.motor1.is_alive(): pass
@@ -43,10 +42,12 @@ class MotorThread(threading.Thread):
         self.jetsonPin = jetsonPin
         self.pwmStrength = pwmStrength
         threading.Thread.__init__(self)
+        self.isPrint = False
     def run(self):
         GPIO.setup(self.jetsonPin, GPIO.OUT)
         GPIO.output(self.jetsonPin, GPIO.LOW)
         print("\r\nMotor at Pin{} starts at {}0 capacity.".format(self.jetsonPin, self.pwmStrength))
+        self.isPrint = True
         while not self._stopevent.is_set():
             n = 0
             while n<10:
