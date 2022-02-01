@@ -153,5 +153,5 @@ class MotorThread(threading.Thread):
 #         self._stopevent.set()
 #         threading.Thread.join(self, timeout)
 
-# if __name__ == '__main__':
-#     main()
+if __name__ == '__main__':
+    main()
