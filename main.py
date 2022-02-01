@@ -22,11 +22,11 @@ def main():
 
     # try: 
     while True:
-        while not isMotorsAllPrinted(): pass
+        while not isMotorsAllPrinted(motors): pass
         motorNum = int(input("\r\nSelect motor to control(0-{}, enter 9 to quit): ".format(len(pins)-1)))
         if motorNum==9:
             for motor in motors: motor.join()
-            while not isMotorsAllShut(): pass
+            while not isMotorsAllShut(motors): pass
             break
         pwm = int(input("\r\nSet PWM capacity(0-10): "))
         motorSelected = "Motor {}".format(motorNum)
