@@ -32,7 +32,10 @@ class ControlThread(threading.Thread):
         while(True):
             while not self.isMotorsAllPrint(): pass
             motorIndex = int(input("\r\nSelect motor to control(0-{}, enter 9 to quit): ".format(self.numMotors)))
-            if motorIndex==9: self.shutProgram()
+            if motorIndex==9: 
+                for motor in self.motorThreads: motor.join()
+                while not self.isMotorsAllShut(): pass
+                return
             motorSelected = self.motorThreads[motorIndex]
             pinSelected = self.motorPins[motorIndex]
             pwmStrength = int(input("\r\nSet PWM capacity(0-10): "))
@@ -48,14 +51,16 @@ class ControlThread(threading.Thread):
         for motor in self.motorThreads:
             if not motor.is_alive(): isAllAlive = False 
         return isAllAlive
+    def isMotorsAllShut(self):
+        isAllShut = True
+        for motor in self.motorThreads:
+            if motor.is_alive(): isAllShut = False
+        return isAllShut
     def isMotorsAllPrint(self):
         isAllPrint = True
         for motor in self.motorThreads:
             if not motor.isPrint: isAllPrint = False
         return isAllPrint
-    def shutProgram(self):
-        for motor in self.motorThreads: motor.join()
-        threading.currentThread.join(None)
 
 
 
