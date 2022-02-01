@@ -71,8 +71,10 @@ class MotorThread(threading.Thread):
             n = 0
             while n<10:
                 for motor in self.motorNames:
-                    if n<self.motorStatus[motor]["PWM"]: GPIO.output(self.motorStatus[motor]["Pin"], GPIO.HIGH)
-                    else: GPIO.output(self.motorStatus[motor]["Pin"], GPIO.HIGH)
+                    pin = self.motorStatus[motor]["Pin"]
+                    pwm = self.motorStatus[motor]["PWM"]
+                    if n<pwm: GPIO.output(pin, GPIO.HIGH)
+                    else: GPIO.output(pin, GPIO.LOW)
                 n += 1
     def join(self, timeout=None):
         self._stopevent.set()
