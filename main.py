@@ -25,7 +25,7 @@ class ControlThread(threading.Thread):
         self.numMotors = len(self.motorPins)
         threading.Thread.__init__(self)
         print("Control Panel is ready!")
-        self.motorThreads = [MotorThread(jetsonPin=pin, pwmStrength=5) for pin in self.motorPins]
+        self.motorThreads = [MotorThread(jetsonPin=pin, pwmStrength=10) for pin in self.motorPins]
         for motor in self.motorThreads: motor.start()
         while not self.isMotorsAllAlive(): pass
     def run(self):
