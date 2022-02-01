@@ -7,7 +7,9 @@ def main():
     # Pin Setup:
     GPIO.setmode(GPIO.BOARD)  # BOARD pin-numbering scheme
 
-    control = ControlThread()
+    motorPins = [3, 7, 11, 15]
+
+    control = ControlThread(motorPins=motorPins)
     control.start()
 
     try: 
@@ -18,21 +20,39 @@ def main():
 
 
 class ControlThread(threading.Thread):
-    def __init__(self):
+    def __init__(self, motorPins):
+        self.motorPins = motorPins
+        self.numMotors = len(self.motorPins)
         threading.Thread.__init__(self)
         print("Control Panel is ready!")
-        self.motor1 = MotorThread(jetsonPin=12, pwmStrength=0)
-        self.motor1.start()
-        while not self.motor1.is_alive(): pass
+        self.motorThreads = [MotorThread(jetsonPin=pin, pwmStrength=0) for pin in self.motorPins]
+        for motor in self.motorThreads: motor.start()
+        while not self.isMotorsAllAlive(): pass
     def run(self):
         while(True):
-            while not self.motor1.isPrint: pass
+            while not self.isMotorsAllPrint(): pass
+            motorIndex = int(input("\r\nSelect motor to control(0-{}): ".format(self.numMotors)))
+            motorSelected = self.motorThreads[motorIndex]
+            pinSelected = self.motorPins[motorIndex]
             pwmStrength = int(input("\r\nSet PWM capacity(0-10): "))
-            self.motor1.join()
-            while self.motor1.is_alive(): pass
-            self.motor1 = MotorThread(jetsonPin=12, pwmStrength=pwmStrength)
-            self.motor1.start()
-            print("Outputting {} to Pin {}.".format(pwmStrength, 12))
+            # for motor in self.motorThreads: motor.join()
+            # self.motor1.join()
+            motorSelected.join()
+            while motorSelected.is_alive(): pass
+            newMotor = MotorThread(jetsonPin=pinSelected, pwmStrength=pwmStrength)
+            self.motorThreads.insert(motorIndex, newMotor)
+            newMotor.start()
+    def isMotorsAllAlive(self):
+        isAllAlive = True
+        for motor in self.motorThreads:
+            if not motor.is_alive(): isAllAlive = False 
+        return isAllAlive
+    def isMotorsAllPrint(self):
+        isAllPrint = True
+        for motor in self.motorThreads:
+            if not motor.isPrint: isAllPrint = False
+        return isAllPrint
+
 
 
 
