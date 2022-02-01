@@ -7,7 +7,7 @@ def main():
     # Pin Setup:
     GPIO.setmode(GPIO.BOARD)  # BOARD pin-numbering scheme
 
-    pins = [7, 11, 19, 21, 22, 23, 24, 26 29, 31, 32]
+    pins = [7, 11, 19, 21, 22, 23, 24, 26, 29, 31, 32]
     motorNames = ["Motor {}".format(n) for n in range(len(pins))]
     motorStatus = {
         motorNames[n]: {
