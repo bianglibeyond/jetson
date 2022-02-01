@@ -10,13 +10,10 @@ def main():
     pins = [7, 11, 19]
     motorStatus = {
         "Motor {}".format(n): {
-            "Pin": pin, 
-            "PWM": 0
+            "Pin": pins[n], 
+            "PWM": 0,
             } 
-        for (n, pin) in (
-            range(len(pins)), 
-            pins
-            )
+        for n in (range(len(pins)))
     }
 
     control = ControlThread(motorStatus=motorStatus)
