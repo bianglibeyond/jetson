@@ -46,7 +46,7 @@ class MotorThread(threading.Thread):
     def run(self):
         GPIO.setup(self.jetsonPin, GPIO.OUT)
         GPIO.output(self.jetsonPin, GPIO.LOW)
-        print("\r\nMotor at Pin{} starts at {}0%% capacity.".format(self.jetsonPin, self.pwmStrength))
+        print("\r\nMotor at Pin{} starts at {}0% capacity.".format(self.jetsonPin, self.pwmStrength))
         self.isPrint = True
         while not self._stopevent.is_set():
             n = 0
