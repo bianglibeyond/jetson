@@ -30,7 +30,7 @@ def main():
 
 
 class MotorThread(threading.Thread):
-    def __init__(self, name: int, jetsonPin: int, pwmStrength: int):
+    def __init__(self, name, jetsonPin, pwmStrength):
         self._stopevent = threading.Event()
         self._sleepperiod = 1.0
         threading.Thread.__init__(self, name=name)
