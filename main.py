@@ -1,8 +1,6 @@
-from concurrent.futures import thread
 from msvcrt import setmode
 import RPi.GPIO as GPIO
-import time, threading
-from datetime import datetime
+import threading
 
 
 
