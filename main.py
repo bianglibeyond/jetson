@@ -21,13 +21,21 @@ def main():
     for motor in motors: motor.start()
 
     while True:
+        
         while not isMotorsAllPrinted(motors): pass
-        motorNum = int(input("\r\nSelect motor to control(0-{}, enter 9 to quit): ".format(len(pins)-1)))
-        if motorNum==9:
+        userInput = input("\r\nSelect motor to control(0-{}, enter q to quit): ".format(len(pins)-1))
+        while userInput not in [str(n) for n in range(len(pins))] and userInput != "q":
+            userInput = input("\r\nWrong input!\r\nSelect motor to control(0-{}, enter q to quit): ".format(len(pins)-1))
+        if userInput=="q":
             for motor in motors: motor.join()
             while not isMotorsAllShut(motors): pass
             break
-        pwm = int(input("\r\nSet PWM capacity(0-10): "))
+        motorNum = int(userInput)
+        userInput = int(input("\r\nSet PWM capacity(0-10): "))
+        while userInput not in [str(n) for n in range(11)]:
+            serInput = int(input("\r\nWrong input!\r\nSet PWM capacity(0-10): "))
+        pwm = int(userInput)
+
         motorNameSelected = "Motor {}".format(motorNum)
         motorStatus[motorNameSelected]["PWM"] = pwm
         motors[motorNum].join()
