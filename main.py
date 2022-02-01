@@ -1,16 +1,12 @@
 import RPi.GPIO as GPIO
-import threading
+import threading, time
 
 
 
 def main():
-    pwmStrength = 0
-
     # Pin Setup:
     GPIO.setmode(GPIO.BOARD)  # BOARD pin-numbering scheme
 
-    motor1 = MotorThread(jetsonPin=12, pwmStrength=pwmStrength)
-    motor1.start()
     control = ControlThread()
     control.start()
 
@@ -25,6 +21,10 @@ class ControlThread(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         print("Control Panel is ready!")
+        time.sleep(2)
+        motor1 = MotorThread(jetsonPin=12, pwmStrength=0)
+        motor1.start()
+        while not motor1.is_alive(): pass
     def run(self):
         while(True):
             pwmStrength = int(input("Set PWM capacity(0-10): "))
