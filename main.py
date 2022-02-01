@@ -37,7 +37,7 @@ class ControlThread(threading.Thread):
         for motor in self.motors: motor.start()
     def run(self):
         while True:
-            while not self.isMotorsAllPrint: pass
+            while not self.isMotorsAllPrint(): pass
             motorNum = int(input("\r\nSelect motor to control(0-{}, enter 9 to quit): ".format(self.numMotors-1)))
             if motorNum==9:
                 for motor in self.motors: motor.join()
