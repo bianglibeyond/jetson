@@ -52,6 +52,7 @@ class ControlThread(threading.Thread):
             self.motors.join()
             while self.motors.is_alive(): pass
             self.motors = MotorThread(self.motorStatus)
+            self.motors.start()
 
 
 class MotorThread(threading.Thread):
