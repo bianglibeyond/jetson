@@ -7,7 +7,7 @@ def main():
     # Pin Setup:
     GPIO.setmode(GPIO.BOARD)  # BOARD pin-numbering scheme
 
-    motorPins = [7, 11, 15, 19]
+    motorPins = [7, 11, 18, 19]
 
     control = ControlThread(motorPins=motorPins)
     control.start()
