@@ -46,8 +46,9 @@ class ControlThread(threading.Thread):
             pwm = int(input("\r\nSet PWM capacity(0-10): "))
             motorSelected = "Motor {}".format(motorNum)
             self.motorStatus[motorSelected]["PWM"] = pwm
-            self.motors[motorNum].join()
-            while self.motors[motorNum].is_alive(): pass
+            # self.motors[motorNum].join()
+            # while self.motors[motorNum].is_alive(): pass
+            self.motors[motorNum]._running = False
             newMotor = MotorThread(pin=self.motorStatus[motorSelected]["Pin"], pwm=self.motorStatus[motorSelected]["PWM"])
             self.motors[motorNum] = newMotor
             newMotor.start()
