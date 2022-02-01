@@ -25,6 +25,7 @@ def main():
         while not isMotorsAllPrinted(motors): pass
         userInput = input("\r\nSelect motor to control(0-{}, enter q to quit): ".format(len(pins)-1))
         while userInput not in [str(n) for n in range(len(pins))] and userInput != "q":
+            print("{} with length of {}".format(userInput, len(userInput)))
             userInput = input("\r\nWrong input!\r\nSelect motor to control(0-{}, enter q to quit): ".format(len(pins)-1))
         if userInput=="q":
             for motor in motors: motor.join()
