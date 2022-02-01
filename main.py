@@ -55,7 +55,7 @@ class ControlThread(threading.Thread):
         return isAllPrint
     def shutProgram(self):
         for motor in self.motorThreads: motor.join()
-        self.join()
+        threading.Thread.join(self, None)
 
 
 
