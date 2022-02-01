@@ -25,13 +25,13 @@ class ControlThread(threading.Thread):
         self.numMotors = len(self.motorPins)
         threading.Thread.__init__(self)
         print("Control Panel is ready!")
-        self.motorThreads = [MotorThread(jetsonPin=pin, pwmStrength=0) for pin in self.motorPins]
+        self.motorThreads = [MotorThread(jetsonPin=pin, pwmStrength=5) for pin in self.motorPins]
         for motor in self.motorThreads: motor.start()
         while not self.isMotorsAllAlive(): pass
     def run(self):
         while(True):
             while not self.isMotorsAllPrint(): pass
-            motorIndex = int(input("\r\nSelect motor to control(0-{}, enter 9 to quit): ".format(self.numMotors)))
+            motorIndex = int(input("\r\nSelect motor to control(0-{}, enter 9 to quit): ".format(self.numMotors-1)))
             if motorIndex==9: 
                 for motor in self.motorThreads: motor.join()
                 while not self.isMotorsAllShut(): pass
