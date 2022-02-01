@@ -22,17 +22,17 @@ class ControlThread(threading.Thread):
         threading.Thread.__init__(self)
         print("Control Panel is ready!")
         time.sleep(2)
-        motor1 = MotorThread(jetsonPin=12, pwmStrength=0)
-        motor1.start()
-        while not motor1.is_alive(): pass
+        self.motor1 = MotorThread(jetsonPin=12, pwmStrength=0)
+        self.motor1.start()
+        while not self.motor1.is_alive(): pass
         time.sleep(0.01)
     def run(self):
         while(True):
             pwmStrength = int(input("\r\nSet PWM capacity(0-10): "))
-            motor1.join()
-            while motor1.is_alive(): pass
-            motor1 = MotorThread(jetsonPin=12, pwmStrength=pwmStrength)
-            motor1.start()
+            self.motor1.join()
+            while self.motor1.is_alive(): pass
+            self.motor1 = MotorThread(jetsonPin=12, pwmStrength=pwmStrength)
+            self.motor1.start()
             print("Outputting {} to Pin {}".format(pwmStrength, 12))
 
 
