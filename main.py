@@ -1,4 +1,3 @@
-from msvcrt import setmode
 import RPi.GPIO as GPIO
 import threading
 
