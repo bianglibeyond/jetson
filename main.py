@@ -17,7 +17,7 @@ def main():
         for n in (range(len(pins)))
     }
 
-    motors = [MotorThread(pin=motorStatus[motor]["Pin"], pwm=motorStatus[motor]["PWM"]) for motor in motorNames]
+    motors = [MotorThread(motorStatus=motorStatus, motorName=name) for name in motorNames]
     for motor in motors: motor.start()
 
     # try: 
@@ -29,12 +29,12 @@ def main():
             while not isMotorsAllShut(motors): pass
             break
         pwm = int(input("\r\nSet PWM capacity(0-10): "))
-        motorSelected = "Motor {}".format(motorNum)
-        motorStatus[motorSelected]["PWM"] = pwm
+        motorNameSelected = "Motor {}".format(motorNum)
+        motorStatus[motorNameSelected]["PWM"] = pwm
         motors[motorNum].join()
         while motors[motorNum].is_alive(): pass
         # self.motors[motorNum]._running = False
-        newMotor = MotorThread(pin=motorStatus[motorSelected]["Pin"], pwm=motorStatus[motorSelected]["PWM"])
+        newMotor = MotorThread(motorStatus=motorStatus, motorName=motorNameSelected)
         motors[motorNum] = newMotor
         newMotor.start()
     # finally:
@@ -59,16 +59,17 @@ def isMotorsAllShut(motors):
 
 
 class MotorThread(threading.Thread):
-    def __init__(self, pin, pwm):
+    def __init__(self, motorStatus, motorName):
         self._stopevent = threading.Event()
-        self.pin = pin
-        self.pwm = pwm
+        self.motorName = motorName
+        self.pin = motorStatus[self.motorName]["Pin"]
+        self.pwm = motorStatus[self.motorName]["PWM"]
         threading.Thread.__init__(self)
         self.isPrint = False
     def run(self):
         GPIO.setup(self.pin, GPIO.OUT)
         GPIO.output(self.pin, GPIO.LOW)
-        print("\r\nMotor at Pin{} starts at {}0% capacity.".format(self.pin, self.pwm))
+        print("\r\n{} at Pin{} starts at {}0% capacity.".format(self.motorName, self.pin, self.pwm))
         self.isPrint = True
         while not self._stopevent.is_set():
             n = 0
