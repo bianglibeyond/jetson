@@ -13,7 +13,7 @@ def main():
     control.start()
 
     try: 
-        while True & control.is_alive(): pass
+        while control.is_alive(): pass
     finally:
         GPIO.cleanup()  # cleanup all GPIO
     
