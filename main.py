@@ -1,5 +1,5 @@
 import RPi.GPIO as GPIO
-import threading
+import threading, Queue
 
 
 
@@ -7,7 +7,7 @@ def main():
     # Pin Setup:
     GPIO.setmode(GPIO.BOARD)  # BOARD pin-numbering scheme
 
-    pins = [7, 11, 19, 21, 22, 23, 24, 26, 29, 31, 32]
+    pins = [7, 11, 19, 21, 22, 23, 24, 26, 29, 31, 32, 33, 35, 36, 37, 38, 40]
     motorNames = ["Motor {}".format(n) for n in range(len(pins))]
     motorStatus = {
         motorNames[n]: {
@@ -20,7 +20,6 @@ def main():
     motors = [MotorThread(motorStatus=motorStatus, motorName=name) for name in motorNames]
     for motor in motors: motor.start()
 
-    # try: 
     while True:
         while not isMotorsAllPrinted(motors): pass
         motorNum = int(input("\r\nSelect motor to control(0-{}, enter 9 to quit): ".format(len(pins)-1)))
@@ -33,12 +32,9 @@ def main():
         motorStatus[motorNameSelected]["PWM"] = pwm
         motors[motorNum].join()
         while motors[motorNum].is_alive(): pass
-        # self.motors[motorNum]._running = False
         newMotor = MotorThread(motorStatus=motorStatus, motorName=motorNameSelected)
         motors[motorNum] = newMotor
         newMotor.start()
-    # finally:
-    #     GPIO.cleanup()  # cleanup all GPIO
 
 
 
