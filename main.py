@@ -13,7 +13,7 @@ motorStatus = {
             } 
         for n in (range(len(pins)))
     }
-frequency = 200
+# frequency = 200
 # the cycle time is roughly around 1.5-2.5 ms, 
 # frequency of 200 can make cycle time 5 ms, 
 # frequency of 300 can make cycle time 3.3 ms
@@ -76,7 +76,7 @@ def isMotorsAllShut(motors):
 class MotorThread(threading.Thread):
     def __init__(self, motorName):
         global motorStatus, frequency
-        self._stopevent = threading.Event()
+        # self._stopevent = threading.Event()
         self.motorName = motorName
         self.pin = motorStatus[self.motorName]["Pin"]
         self.pwm = motorStatus[self.motorName]["PWM"]
@@ -98,13 +98,13 @@ class MotorThread(threading.Thread):
                 else: 
                     GPIO.output(self.pin, GPIO.LOW)
                 n += 1
-            timePassed = time.time() - startTime
-            if timePassed<self.duration:
-                time.sleep(self.duration-timePassed)
-                # timePassed = time.time() - startTime
-                # print("\r\n{} at Pin{} has 1 cycle of {}ms".format(self.motorName, self.pin, timePassed*1000))
-            else:
-                print("\r\n{} at Pin{} overrun DURATION of {}ms!".format(self.motorName, self.pin, self.duration*1000))
+            # timePassed = time.time() - startTime
+            # if timePassed<self.duration:
+            #     time.sleep(self.duration-timePassed)
+            #     # timePassed = time.time() - startTime
+            #     # print("\r\n{} at Pin{} has 1 cycle of {}ms".format(self.motorName, self.pin, timePassed*1000))
+            # else:
+            #     print("\r\n{} at Pin{} overrun DURATION of {}ms!".format(self.motorName, self.pin, self.duration*1000))
     def join(self, timeout=None):
         self._stopevent.set()
         threading.Thread.join(self, timeout)
