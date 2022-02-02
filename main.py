@@ -66,6 +66,8 @@ def main():
         motorNameSelected = "Motor {}".format(motorNum)
         motorStatus[motorNameSelected]["PWM"] = pwm
 
+        print("\r\n{} at Pin{} is set at {}0% capacity.".format(motorNameSelected, motorStatus[motorNameSelected]["Pin"], pwm))
+
 
 
 def isMotorsAllPrinted(motors):
