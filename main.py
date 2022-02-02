@@ -66,7 +66,7 @@ def main():
         motorNameSelected = "Motor {}".format(motorNum)
         motorStatus[motorNameSelected]["PWM"] = pwm
 
-        print("\r\n{} at Pin{} is set at {}0% capacity.".format(motorNameSelected, motorStatus[motorNameSelected]["Pin"], pwm))
+        print("\r\n{} at Pin {} is set at {}0% capacity.".format(motorNameSelected, motorStatus[motorNameSelected]["Pin"], pwm))
 
 
 
@@ -99,7 +99,7 @@ class MotorThread(threading.Thread):
         self.isPrint = False
         GPIO.setup(self.pin, GPIO.OUT)
         GPIO.output(self.pin, GPIO.LOW)
-        print("\r\n{} at Pin{} starts at {}0% capacity.".format(self.motorName, self.pin, self.pwm))
+        print("\r\n{} at Pin {} starts at {}0% capacity.".format(self.motorName, self.pin, self.pwm))
         self.isPrint = True
     def run(self):
         while not self._stopevent.is_set():
