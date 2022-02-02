@@ -13,7 +13,7 @@ motorStatus = {
             } 
         for n in (range(len(pins)))
     }
-frequency = 50
+frequency = 2000
 
 
 
