@@ -80,7 +80,7 @@ class MotorThread(threading.Thread):
         self.motorName = motorName
         self.pin = motorStatus[self.motorName]["Pin"]
         self.pwm = motorStatus[self.motorName]["PWM"]
-        # self.duration = 1.0/frequency
+        self.duration = 1.0/frequency
         threading.Thread.__init__(self)
         self.isPrint = False
         GPIO.setup(self.pin, GPIO.OUT)
