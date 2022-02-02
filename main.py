@@ -53,7 +53,9 @@ def main():
         motorNameSelected = "Motor {}".format(motorNum)
         motorStatus[motorNameSelected]["PWM"] = pwm
 
-        time.sleep(0.01)
+        while isMotorsAllPrinted(motors): 
+            pass
+        # time.sleep(0.01)
 
 
 
