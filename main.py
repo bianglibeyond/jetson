@@ -14,9 +14,9 @@ motorStatus = {
         for n in (range(len(pins)))
     }
 frequency = 200
-the cycle time is roughly around 1.5-2.5 ms, 
-frequency of 200 can make cycle time 5 ms, 
-frequency of 300 can make cycle time 3.3 ms
+# the cycle time is roughly around 1.5-2.5 ms, 
+# frequency of 200 can make cycle time 5 ms, 
+# frequency of 300 can make cycle time 3.3 ms
 
 
 
