@@ -13,7 +13,10 @@ motorStatus = {
             } 
         for n in (range(len(pins)))
     }
-frequency = 200
+frequency = 300
+# the cycle time is roughly around 0.15-0.25 ms, 
+# frequency of 200 can make cycle time 0.5 ms, 
+# frequency of 300 can make cycle time 0.33 ms
 
 
 
@@ -96,9 +99,10 @@ class MotorThread(threading.Thread):
                     GPIO.output(self.pin, GPIO.LOW)
                 n += 1
             timePassed = time.time() - startTime
-            print("\r\n{} at Pin{} has 1 cycle of {}ms".format(self.motorName, self.pin, timePassed*100))
             if timePassed<self.duration:
                 time.sleep(self.duration-timePassed)
+                timePassed = time.time() - startTime
+                print("\r\n{} at Pin{} has 1 cycle of {}ms".format(self.motorName, self.pin, timePassed*100))
             else:
                 print("\r\n{} at Pin{} overrun DURATION of {}ms!".format(self.motorName, self.pin, self.duration*100))
     def join(self, timeout=None):
