@@ -101,8 +101,8 @@ class MotorThread(threading.Thread):
             timePassed = time.time() - startTime
             if timePassed<self.duration:
                 time.sleep(self.duration-timePassed)
-                timePassed = time.time() - startTime
-                print("\r\n{} at Pin{} has 1 cycle of {}ms".format(self.motorName, self.pin, timePassed*100))
+                # timePassed = time.time() - startTime
+                # print("\r\n{} at Pin{} has 1 cycle of {}ms".format(self.motorName, self.pin, timePassed*100))
             else:
                 print("\r\n{} at Pin{} overrun DURATION of {}ms!".format(self.motorName, self.pin, self.duration*100))
     def join(self, timeout=None):
