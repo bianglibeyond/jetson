@@ -99,7 +99,7 @@ class MotorThread(threading.Thread):
             if timePassed<self.duration:
                 time.sleep(self.duration-timePassed)
             else:
-                print("\r\n{} at Pin{} overrun DURATION!".format(self.motorName, self.pin))
+                print("\r\n{} at Pin{} overrun DURATION of {}ms!".format(self.motorName, self.pin, self.duration*100))
     def join(self, timeout=None):
         self._stopevent.set()
         threading.Thread.join(self, timeout)
