@@ -1,5 +1,5 @@
 import RPi.GPIO as GPIO
-import threading, datetime, time
+import threading, time
 
 
 
@@ -87,7 +87,7 @@ class MotorThread(threading.Thread):
     def run(self):
         while not self._stopevent.is_set():
             self.pwm = motorStatus[self.motorName]["PWM"]
-            startTime = datetime.now()
+            startTime = time.time()
             n = 0
             while n<10:
                 if n<self.pwm: 
@@ -95,7 +95,7 @@ class MotorThread(threading.Thread):
                 else: 
                     GPIO.output(self.pin, GPIO.LOW)
                 n += 1
-            timePassed = datetime.now().total_seconds()
+            timePassed = time.time() - startTime
             if timePassed<self.duration:
                 time.sleep(self.duration-timePassed)
             else:
