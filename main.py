@@ -52,8 +52,8 @@ def main():
 
         motorNameSelected = "Motor {}".format(motorNum)
         motorStatus[motorNameSelected]["PWM"] = pwm
-        motors[motorNameSelected].isPrint = False
-        while not isMotorsAllPrinted(motors): pass
+        # motors[motorNameSelected].isPrint = False
+        # while not isMotorsAllPrinted(motors): pass
 
 
 
@@ -93,11 +93,12 @@ class MotorThread(threading.Thread):
         self.isPrint = True
     def run(self):
         while not self._stopevent.is_set():
-            if self.pwm != motorStatus[self.motorName]["PWM"]:
-                self.pwm = motorStatus[self.motorName]["PWM"]
-                self.isPrint = False
-                print("\r\n{} at Pin{} starts at {}0% capacity.".format(self.motorName, self.pin, self.pwm))
-                self.isPrint = True
+            self.pwm = motorStatus[self.motorName]["PWM"]
+            # if self.pwm != motorStatus[self.motorName]["PWM"]:
+            #     self.pwm = motorStatus[self.motorName]["PWM"]
+            #     self.isPrint = False
+            #     print("\r\n{} at Pin{} starts at {}0% capacity.".format(self.motorName, self.pin, self.pwm))
+            #     self.isPrint = True
             # startTime = time.time()
             n = 0
             while n<10:
