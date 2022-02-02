@@ -45,7 +45,7 @@ def main():
                 pass
             break
         motorNum = int(userInput)
-        userInput = int(input("\r\nSet PWM capacity(0-10): "))
+        userInput = input("\r\nSet PWM capacity(0-10): ")
         while userInput not in [str(n) for n in range(11)]:
             userInput = int(input("\r\nWrong input!\r\nSet PWM capacity(0-10): "))
         pwm = int(userInput)
