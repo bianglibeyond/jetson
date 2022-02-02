@@ -96,7 +96,7 @@ class MotorThread(threading.Thread):
                     GPIO.output(self.pin, GPIO.LOW)
                 n += 1
             timePassed = time.time() - startTime
-            print("\r\n{} at Pin{} has 1 cycle of {}ms".format(self.motorName, self.pin, self.duration*100))
+            print("\r\n{} at Pin{} has 1 cycle of {}ms".format(self.motorName, self.pin, timePassed*100))
             if timePassed<self.duration:
                 time.sleep(self.duration-timePassed)
             else:
