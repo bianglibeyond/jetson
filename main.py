@@ -89,8 +89,12 @@ class MotorThread(threading.Thread):
         self.isPrint = True
     def run(self):
         while not self._stopevent.is_set():
-            self.pwm = motorStatus[self.motorName]["PWM"]
-            startTime = time.time()
+            if self.pwm != motorStatus[self.motorName]["PWM"]:
+                self.isPrint = False
+                print("\r\n{} at Pin{} starts at {}0% capacity.".format(self.motorName, self.pin, self.pwm))
+                self.isPrint = True
+                self.pwm = motorStatus[self.motorName]["PWM"]
+            # startTime = time.time()
             n = 0
             while n<10:
                 if n<self.pwm: 
