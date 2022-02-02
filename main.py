@@ -27,9 +27,9 @@ def main():
     # Pin Setup:
     GPIO.setmode(GPIO.BOARD)  # BOARD pin-numbering scheme
 
-    motors = [MotorThread(motorName=name) for name in motorNames]
-    for motor in motors: 
-        motor.start()
+    motors = {name: MotorThread(motorName=name) for name in motorNames}
+    for motor in motorNames: 
+        motors[motor].start()
 
     while True:
         
@@ -52,16 +52,15 @@ def main():
 
         motorNameSelected = "Motor {}".format(motorNum)
         motorStatus[motorNameSelected]["PWM"] = pwm
-
-        while isMotorsAllPrinted(motors): 
-            pass
-        # time.sleep(0.01)
+        motors[motorNameSelected].isPrint = False
+        while not isMotorsAllPrinted(motors): pass
 
 
 
 def isMotorsAllPrinted(motors):
     isAllPrinted = True
-    for motor in motors:
+    for item in motors.items():
+        motor = item[1]
         if not motor.isPrint: 
             isAllPrinted = False
     return isAllPrinted
@@ -70,7 +69,8 @@ def isMotorsAllPrinted(motors):
 
 def isMotorsAllShut(motors):
     isAllShut = True
-    for motor in motors:
+    for item in motors.items():
+        motor = item[1]
         if motor.is_alive(): 
             isAllShut = False
     return isAllShut
