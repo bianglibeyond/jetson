@@ -38,7 +38,7 @@ def main():
         userInput = input("\r\nSelect motor to control(0-{}, but only 0-2 are valid now, enter q to quit): ".format(len(pins)-1))
         while userInput not in range(len(pins)) and userInput != "q":
             userInput = input("\r\nWrong input!\r\nSelect motor to control(0-{}, enter q to quit): ".format(len(pins)-1))
-        if userInput=="q":
+        if userInput[0]=="q":
             for motor in motors: 
                 motor.join()
             while not isMotorsAllShut(motors): 
