@@ -1,11 +1,10 @@
 import RPi.GPIO as GPIO
-import threading, time
+import threading
 
 
 
 # Global variables for cross-thread communication
-pins = [7, 11, 19, 21, 22, 23, 24, 26, 29, 31,]
-# pins = [7, 11, 19, 21, 22, 23, 24, 26, 29, 31, 32, 33, 35, 36, 37, 38, 40]
+pins = [7, 11, 19, 21, 22, 23, 24, 26, 29, 31, 32, 33, 35, 36, 37, 38, 40]
 motorNames = ["Motor {}".format(n) for n in range(len(pins))]
 motorStatus = {
         motorNames[n]: {
@@ -24,53 +23,47 @@ def main():
     # Pin Setup:
     GPIO.setmode(GPIO.BOARD)  # BOARD pin-numbering scheme
 
-    motors = {name: MotorThread(motorName=name) for name in motorNames}
-    for motor in motorNames: 
-        motors[motor].start()
+    motors = [MotorThread(motorName=name) for name in motorNames]
+    for motor in motors: motor.start()
 
     while True:
         
-        while not isMotorsAllPrinted(motors): 
-            pass
+        while not isMotorsAllPrinted(motors): pass
         userInput = input("\r\nSelect motor to control(0-{}, but only 0-2 are valid now, enter q to quit): ".format(len(pins)-1))
-        while userInput not in [str(n) for n in range(len(pins))] and userInput != "q":
+        while userInput not in range(len(pins)) and userInput != "q":
             userInput = input("\r\nWrong input!\r\nSelect motor to control(0-{}, enter q to quit): ".format(len(pins)-1))
         if userInput=="q":
-            for motor in motorNames: 
-                motors[motor].join()
-            while not isMotorsAllShut(motors): 
-                pass
+            for motor in motors: motor.join()
+            while not isMotorsAllShut(motors): pass
             break
         motorNum = int(userInput)
-        userInput = input("\r\nSet PWM capacity(0-10): ")
-        while userInput not in [str(n) for n in range(11)]:
+        userInput = int(input("\r\nSet PWM capacity(0-10): "))
+        while userInput not in range(11):
             userInput = int(input("\r\nWrong input!\r\nSet PWM capacity(0-10): "))
         pwm = int(userInput)
 
         motorNameSelected = "Motor {}".format(motorNum)
         motorStatus[motorNameSelected]["PWM"] = pwm
-        motors[motorNameSelected].isPrint = False
-        while not isMotorsAllPrinted(motors): 
-            pass
+        # motors[motorNum].join()
+        # while motors[motorNum].is_alive(): pass
+        # newMotor = MotorThread(motorStatus=motorStatus, motorName=motorNameSelected)
+        # motors[motorNum] = newMotor
+        # newMotor.start()
 
 
 
 def isMotorsAllPrinted(motors):
     isAllPrinted = True
-    for item in motors.items():
-        motor = item[1]
-        if not motor.isPrint: 
-            isAllPrinted = False
+    for motor in motors:
+        if not motor.isPrint: isAllPrinted = False
     return isAllPrinted
 
 
 
 def isMotorsAllShut(motors):
     isAllShut = True
-    for item in motors.items():
-        motor = item[1]
-        if motor.is_alive(): 
-            isAllShut = False
+    for motor in motors:
+        if motor.is_alive(): isAllShut = False
     return isAllShut
 
 
@@ -90,18 +83,11 @@ class MotorThread(threading.Thread):
         self.isPrint = True
     def run(self):
         while not self._stopevent.is_set():
-            # self.pwm = motorStatus[self.motorName]["PWM"]
-            if self.pwm != motorStatus[self.motorName]["PWM"]:
-                self.pwm = motorStatus[self.motorName]["PWM"]
-                self.isPrint = False
-                print("\r\n{} at Pin{} starts at {}0% capacity.".format(self.motorName, self.pin, self.pwm))
-                self.isPrint = True
+            self.pwm = motorStatus[self.motorName]["PWM"]
             n = 0
             while n<10:
-                if n<self.pwm: 
-                    GPIO.output(self.pin, GPIO.HIGH)
-                else: 
-                    GPIO.output(self.pin, GPIO.LOW)
+                if n<self.pwm: GPIO.output(self.pin, GPIO.HIGH)
+                else: GPIO.output(self.pin, GPIO.LOW)
                 n += 1
     def join(self, timeout=None):
         self._stopevent.set()
