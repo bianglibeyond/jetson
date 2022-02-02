@@ -32,24 +32,9 @@ def main():
             pass
 
         # Python 3
-        userInput = input("\r\nSelect motor to control(0-{}, but only 0-2 are valid now, enter q to quit): ".format(len(pins)-1))
-        while userInput not in [str(n) for n in range(len(pins))] and userInput != "q":
-            userInput = input("\r\nWrong input!\r\nSelect motor to control(0-{}, enter q to quit): ".format(len(pins)-1))
-        if userInput=="q":
-            for motor in motors: 
-                motor.join()
-            while not isMotorsAllShut(motors): 
-                pass
-            break
-        motorNum = int(userInput)
-        userInput = input("\r\nSet PWM capacity(0-10): ")
-        while userInput not in [str(n) for n in range(11)]:
-            userInput = input("\r\nWrong input!\r\nSet PWM capacity(0-10): ")
-
-        # Python 2
-        # userInput = raw_input("\r\nSelect motor to control(0-{}, but only 0-2 are valid now, enter q to quit): ".format(len(pins)-1))
+        # userInput = input("\r\nSelect motor to control(0-{}, but only 0-2 are valid now, enter q to quit): ".format(len(pins)-1))
         # while userInput not in [str(n) for n in range(len(pins))] and userInput != "q":
-        #     userInput = raw_input("\r\nWrong input!\r\nSelect motor to control(0-{}, enter q to quit): ".format(len(pins)-1))
+        #     userInput = input("\r\nWrong input!\r\nSelect motor to control(0-{}, enter q to quit): ".format(len(pins)-1))
         # if userInput=="q":
         #     for motor in motors: 
         #         motor.join()
@@ -57,9 +42,24 @@ def main():
         #         pass
         #     break
         # motorNum = int(userInput)
-        # userInput = raw_input("\r\nSet PWM capacity(0-10): ")
+        # userInput = input("\r\nSet PWM capacity(0-10): ")
         # while userInput not in [str(n) for n in range(11)]:
-        #     userInput = raw_input("\r\nWrong input!\r\nSet PWM capacity(0-10): ")
+        #     userInput = input("\r\nWrong input!\r\nSet PWM capacity(0-10): ")
+
+        # Python 2
+        userInput = raw_input("\r\nSelect motor to control(0-{}, but only 0-2 are valid now, enter q to quit): ".format(len(pins)-1))
+        while userInput not in [str(n) for n in range(len(pins))] and userInput != "q":
+            userInput = raw_input("\r\nWrong input!\r\nSelect motor to control(0-{}, enter q to quit): ".format(len(pins)-1))
+        if userInput=="q":
+            for motor in motors: 
+                motor.join()
+            while not isMotorsAllShut(motors): 
+                pass
+            break
+        motorNum = int(userInput)
+        userInput = raw_input("\r\nSet PWM capacity(0-10): ")
+        while userInput not in [str(n) for n in range(11)]:
+            userInput = raw_input("\r\nWrong input!\r\nSet PWM capacity(0-10): ")
 
         pwm = int(userInput)
 
