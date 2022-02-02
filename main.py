@@ -76,11 +76,11 @@ def isMotorsAllShut(motors):
 class MotorThread(threading.Thread):
     def __init__(self, motorName):
         global motorStatus, frequency
-        # self._stopevent = threading.Event()
+        self._stopevent = threading.Event()
         self.motorName = motorName
         self.pin = motorStatus[self.motorName]["Pin"]
         self.pwm = motorStatus[self.motorName]["PWM"]
-        self.duration = 1.0/frequency
+        # self.duration = 1.0/frequency
         threading.Thread.__init__(self)
         self.isPrint = False
         GPIO.setup(self.pin, GPIO.OUT)
