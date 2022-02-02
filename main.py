@@ -3,13 +3,10 @@ import threading
 
 
 
-def main():
-    # Pin Setup:
-    GPIO.setmode(GPIO.BOARD)  # BOARD pin-numbering scheme
-
-    pins = [7, 11, 19, 21, 22, 23, 24, 26, 29, 31, 32, 33, 35, 36, 37, 38, 40]
-    motorNames = ["Motor {}".format(n) for n in range(len(pins))]
-    motorStatus = {
+# Global variables for cross-thread communication
+pins = [7, 11, 19, 21, 22, 23, 24, 26, 29, 31, 32, 33, 35, 36, 37, 38, 40]
+motorNames = ["Motor {}".format(n) for n in range(len(pins))]
+motorStatus = {
         motorNames[n]: {
             "Pin": pins[n], 
             "PWM": 0,
@@ -17,7 +14,16 @@ def main():
         for n in (range(len(pins)))
     }
 
-    motors = [MotorThread(motorStatus=motorStatus, motorName=name) for name in motorNames]
+
+
+def main():
+
+    global motorStatus
+
+    # Pin Setup:
+    GPIO.setmode(GPIO.BOARD)  # BOARD pin-numbering scheme
+
+    motors = [MotorThread(motorName=name) for name in motorNames]
     for motor in motors: motor.start()
 
     while True:
@@ -33,16 +39,16 @@ def main():
         motorNum = int(userInput)
         userInput = int(input("\r\nSet PWM capacity(0-10): "))
         while userInput not in range(11):
-            serInput = int(input("\r\nWrong input!\r\nSet PWM capacity(0-10): "))
+            userInput = int(input("\r\nWrong input!\r\nSet PWM capacity(0-10): "))
         pwm = int(userInput)
 
         motorNameSelected = "Motor {}".format(motorNum)
         motorStatus[motorNameSelected]["PWM"] = pwm
-        motors[motorNum].join()
-        while motors[motorNum].is_alive(): pass
-        newMotor = MotorThread(motorStatus=motorStatus, motorName=motorNameSelected)
-        motors[motorNum] = newMotor
-        newMotor.start()
+        # motors[motorNum].join()
+        # while motors[motorNum].is_alive(): pass
+        # newMotor = MotorThread(motorStatus=motorStatus, motorName=motorNameSelected)
+        # motors[motorNum] = newMotor
+        # newMotor.start()
 
 
 
@@ -63,19 +69,21 @@ def isMotorsAllShut(motors):
 
 
 class MotorThread(threading.Thread):
-    def __init__(self, motorStatus, motorName):
+    def __init__(self, motorName):
+        global motorStatus
         self._stopevent = threading.Event()
         self.motorName = motorName
         self.pin = motorStatus[self.motorName]["Pin"]
         self.pwm = motorStatus[self.motorName]["PWM"]
         threading.Thread.__init__(self)
         self.isPrint = False
-    def run(self):
         GPIO.setup(self.pin, GPIO.OUT)
         GPIO.output(self.pin, GPIO.LOW)
         print("\r\n{} at Pin{} starts at {}0% capacity.".format(self.motorName, self.pin, self.pwm))
         self.isPrint = True
+    def run(self):
         while not self._stopevent.is_set():
+            self.pwm = motorStatus[self.motorName]["PWM"]
             n = 0
             while n<10:
                 if n<self.pwm: GPIO.output(self.pin, GPIO.HIGH)
