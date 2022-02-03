@@ -22,11 +22,11 @@ def read_temp_raw():
 
 def read_temp():
     lines = read_temp_raw()
-    while lines[0].strip()[–3:] != 'YES':
+    while lines[0].strip()[-3:] != 'YES':
         time.sleep(0.2)
         lines = read_temp_raw()
     equals_pos = lines[1].find('t=')
-    if equals_pos != –1:
+    if equals_pos != -1:
         temp_string = lines[1][equals_pos+2:]
         temp_c = float(temp_string) / 1000.0
         temp_f = temp_c * 9.0 / 5.0 + 32.0
@@ -51,39 +51,39 @@ advertise_service( server_sock, "AquaPiServer",
                    profiles = [ SERIAL_PORT_PROFILE ], 
 #                   protocols = [ OBEX_UUID ] 
                     )
-while True:          
-	print "Waiting for connection on RFCOMM channel %d" % port
+while True:       
+    print("Waiting for connection on RFCOMM channel {}".format(port))
 
-	client_sock, client_info = server_sock.accept()
-	print "Accepted connection from ", client_info
+    client_sock, client_info = server_sock.accept()
+    print("Accepted connection from {}".format(client_info))
 
-	try:
-	        data = client_sock.recv(1024)
-        	if len(data) == 0: break
-	        print "received [%s]" % data
+    try:
+        data = client_sock.recv(1024)
+        if len(data) == 0: break
+        print("received [{}]".format(data))
 
-		if data == 'temp':
-			data = str(read_temp())+'!'
-		elif data == 'lightOn':
-			GPIO.output(17,False)
-			data = 'light on!'
-		elif data == 'lightOff':
-			GPIO.output(17,True)
-			data = 'light off!'
-		else:
-			data = 'WTF!' 
-	        client_sock.send(data)
-		print "sending [%s]" % data
+        if data == 'temp':
+            data = str(read_temp())+'!'
+        elif data == 'lightOn':
+            GPIO.output(17,False)
+            data = 'light on!'
+        elif data == 'lightOff':
+            GPIO.output(17,True)
+            data = 'light off!'
+        else:
+            data = 'WTF!' 
+            client_sock.send(data)
+        print("sending [{}]".format(data))
 
-	except IOError:
-		pass
+    except IOError:
+        pass
 
-	except KeyboardInterrupt:
+    except KeyboardInterrupt:
 
-		print "disconnected"
+        print("disconnected")
 
-		client_sock.close()
-		server_sock.close()
-		print "all done"
+        client_sock.close()
+        server_sock.close()
+        print("all done")
 
-		break
+        break
