@@ -72,7 +72,7 @@ def main():
         # Python2 Random Fingers
         fingersWithMotor = [i for i in range(5)]
         numFingers = randint(0,5)
-        pwm = 3
+        pwm = 7
         fingers = random.sample(fingersWithMotor, numFingers)
         for finger in fingersWithMotor:
             motorNameSelected = "Motor {}".format(finger)
