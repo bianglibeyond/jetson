@@ -71,7 +71,7 @@ def main():
 
         # Python2 Random Fingers
         fingersWithMotor = [i for i in range(5)]
-        numFingers = randint(0,3)
+        numFingers = randint(0,2)
         pwm = 5
         fingers = random.sample(fingersWithMotor, numFingers)
         for n in range(numFingers): 
