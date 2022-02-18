@@ -70,11 +70,12 @@ def main():
         # print("\r\n{} at Pin {} is set at {}0% capacity.".format(motorNameSelected, motorStatus[motorNameSelected]["Pin"], pwm))
 
         # Python2 Random Fingers
-        pins = [7, 11, 19, 21, 22]
+        fingersWithMotor = [i for i in range(5)]
         numFingers = randint(0,5)
         pwm = 3
-        fingers = random.sample(pins, numFingers)
-        for finger in fingers: 
+        fingers = random.sample(fingersWithMotor, numFingers)
+        for n in numFingers: 
+            finger = fingers[n]
             motorNameSelected = "Motor {}".format(finger)
             motorStatus[motorNameSelected]["PWM"] = pwm
         time.sleep(1)
