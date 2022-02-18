@@ -74,15 +74,15 @@ def main():
         numFingers = randint(0,3)
         pwm = 5
         fingers = random.sample(fingersWithMotor, numFingers)
-        for finger in fingersWithMotor:
-            motorNameSelected = "Motor {}".format(finger)
-            motorStatus[motorNameSelected]["PWM"] = 0
         for n in range(numFingers): 
             finger = fingers[n]
             motorNameSelected = "Motor {}".format(finger)
             motorStatus[motorNameSelected]["PWM"] = pwm
-        
         time.sleep(1)
+        for finger in fingersWithMotor:
+            motorNameSelected = "Motor {}".format(finger)
+            motorStatus[motorNameSelected]["PWM"] = 0
+        time.sleep(0.5)
 
 
 def isMotorsAllPrinted(motors):
