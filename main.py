@@ -5,7 +5,9 @@ import threading, time, random
 
 
 # Global variables for cross-thread communication
-pins = [7, 11, 19, 21, 22, 23, 24, 26, 29, 31, 32, 33, 35, 36, 37, 38, 40]
+pins = [7, 11, 19, 21, 22, 23, 24, 26, 29, 31]
+# pinsLeftHand = pins[0:5]
+# pinsRightHand = pins[5:10]
 motorNames = ["Motor {}".format(n) for n in range(len(pins))]
 motorStatus = {
         motorNames[n]: {
@@ -31,6 +33,24 @@ def main():
         
         while not isMotorsAllPrinted(motors): 
             pass
+
+        # Random Fingers
+        leftHandFingersWithMotor = [i for i in range(0, 5)]
+        rightHandFingersWithMotor = [i for i in range(5, 10)]
+        numLeftHandFingers = randint(0, 2)
+        numRightHandFingers = randint(0, 2)
+        pwm = 5
+        leftHandFingers = random.sample(leftHandFingersWithMotor, numLeftHandFingers)
+        rightHandFingers = random.sample(rightHandFingersWithMotor, numRightHandFingers)
+        fingers = leftHandFingers + rightHandFingers
+        for finger in fingers: 
+            motorNameSelected = "Motor {}".format(finger)
+            motorStatus[motorNameSelected]["PWM"] = pwm
+        time.sleep(1)
+        for n in range(10):
+            motorNameSelected = "Motor {}".format(n)
+            motorStatus[motorNameSelected]["PWM"] = 0
+        time.sleep(0.5)
 
         # Python 3
         # userInput = input("\r\nSelect motor to control(0-{}, but only 0-2 are valid now, enter q to quit): ".format(len(pins)-1))
@@ -69,20 +89,8 @@ def main():
 
         # print("\r\n{} at Pin {} is set at {}0% capacity.".format(motorNameSelected, motorStatus[motorNameSelected]["Pin"], pwm))
 
-        # Python2 Random Fingers
-        fingersWithMotor = [i for i in range(5)]
-        numFingers = randint(0,2)
-        pwm = 5
-        fingers = random.sample(fingersWithMotor, numFingers)
-        for n in range(numFingers): 
-            finger = fingers[n]
-            motorNameSelected = "Motor {}".format(finger)
-            motorStatus[motorNameSelected]["PWM"] = pwm
-        time.sleep(1)
-        for finger in fingersWithMotor:
-            motorNameSelected = "Motor {}".format(finger)
-            motorStatus[motorNameSelected]["PWM"] = 0
-        time.sleep(0.5)
+        
+        
 
 
 def isMotorsAllPrinted(motors):
