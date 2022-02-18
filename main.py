@@ -75,6 +75,7 @@ def main():
         pwm = 5
         fingers = random.sample(fingersWithMotor, numFingers)
         for finger in fingersWithMotor:
+            motorNameSelected = "Motor {}".format(finger)
             motorStatus[motorNameSelected]["PWM"] = 0
         for n in range(numFingers): 
             finger = fingers[n]
