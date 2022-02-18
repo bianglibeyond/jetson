@@ -1,5 +1,6 @@
+from random import randint
 import RPi.GPIO as GPIO
-import threading
+import threading, time, random
 
 
 
@@ -47,27 +48,36 @@ def main():
         #     userInput = input("\r\nWrong input!\r\nSet PWM capacity(0-10): ")
 
         # Python 2
-        userInput = raw_input("\r\nSelect motor to control(0-{}, but only 0-2 are valid now, enter q to quit): ".format(len(pins)-1))
-        while userInput not in [str(n) for n in range(len(pins))] and userInput != "q":
-            userInput = raw_input("\r\nWrong input!\r\nSelect motor to control(0-{}, enter q to quit): ".format(len(pins)-1))
-        if userInput=="q":
-            for motor in motors: 
-                motor.join()
-            while not isMotorsAllShut(motors): 
-                pass
-            break
-        motorNum = int(userInput)
-        userInput = raw_input("\r\nSet PWM capacity(0-10): ")
-        while userInput not in [str(n) for n in range(11)]:
-            userInput = raw_input("\r\nWrong input!\r\nSet PWM capacity(0-10): ")
+        # userInput = raw_input("\r\nSelect motor to control(0-{}, but only 0-2 are valid now, enter q to quit): ".format(len(pins)-1))
+        # while userInput not in [str(n) for n in range(len(pins))] and userInput != "q":
+        #     userInput = raw_input("\r\nWrong input!\r\nSelect motor to control(0-{}, enter q to quit): ".format(len(pins)-1))
+        # if userInput=="q":
+        #     for motor in motors: 
+        #         motor.join()
+        #     while not isMotorsAllShut(motors): 
+        #         pass
+        #     break
+        # motorNum = int(userInput)
+        # userInput = raw_input("\r\nSet PWM capacity(0-10): ")
+        # while userInput not in [str(n) for n in range(11)]:
+        #     userInput = raw_input("\r\nWrong input!\r\nSet PWM capacity(0-10): ")
 
-        pwm = int(userInput)
+        # pwm = int(userInput)
 
-        motorNameSelected = "Motor {}".format(motorNum)
-        motorStatus[motorNameSelected]["PWM"] = pwm
+        # motorNameSelected = "Motor {}".format(motorNum)
+        # motorStatus[motorNameSelected]["PWM"] = pwm
 
-        print("\r\n{} at Pin {} is set at {}0% capacity.".format(motorNameSelected, motorStatus[motorNameSelected]["Pin"], pwm))
+        # print("\r\n{} at Pin {} is set at {}0% capacity.".format(motorNameSelected, motorStatus[motorNameSelected]["Pin"], pwm))
 
+        # Python2 Random Fingers
+        pins = [7, 11, 19, 21, 22]
+        numFingers = randint(0,5)
+        pwm = 3
+        fingers = random.sample(pins, numFingers)
+        for finger in fingers: 
+            motorNameSelected = "Motor {}".format(finger)
+            motorStatus[motorNameSelected]["PWM"] = pwm
+        time.sleep(1)
 
 
 def isMotorsAllPrinted(motors):
